@@ -1,7 +1,7 @@
 package com.benedu.javaConfig;
 
 import java.io.BufferedReader;
-
+import java.io.File;
 import java.io.FileReader;
 import java.util.UUID;
 
@@ -24,7 +24,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.benedu.controller.MainController;
 import com.zaxxer.hikari.HikariDataSource;
 
 
@@ -52,19 +51,8 @@ public class AppConfig {
        dataSource.setIdleTimeout(600000);
        dataSource.setPoolName("SpringHikariCP");
        dataSource.setMaxLifetime(1800000);
-        try {
-        	//파일 위치 바꿀 필요 있음
-        	FileReader fr = new FileReader("C:/Users/mojan/remake_benedu/workspace/betterbenedu/src/main/resources/DBUser/dlfma.txt");
-        	BufferedReader br = new BufferedReader( fr );
-        	dataSource.setUsername("ADMIN");
-        	
-        	FileReader fr2 = new FileReader("C:/Users/mojan/remake_benedu/workspace/betterbenedu/src/main/resources/DBUser/qlalfqjsgh.txt");
-        	BufferedReader br2 = new BufferedReader( fr2 );
-        	dataSource.setPassword("wsXUmX?mU*W7w!_");
-        	
-        }catch(Exception e) {
-        	e.printStackTrace();
-        }
+       dataSource.setUsername("admin");
+       dataSource.setPassword("wsXUmX?mU*W7w!_");
         return dataSource;
     }
 
