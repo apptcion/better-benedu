@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Login</title>
+</head>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<body>
+	<div class="form-group">
+	    <label th:for="username">이메일</label>
+	    <input type="text" id="username" class="form-control" placeholder="이메일 입력해주세요">
+	</div>
+	<div class="form-group">
+	    <label th:for="password">비밀번호</label>
+	    <input id="password" class="form-control" name="password" placeholder="비밀번호">
+	</div>
+	<button id="submit" class="btn btn-primary">Submit</button>
+	<div id="isSuccess"></div>
+	<div id="token"></div>
+	<button id="checkToken">토큰확인</button><div id="NowtokenInfo"></div>
+	<button id="toAdd">이동</button>
+	<button id="getNew">새 토큰 발급 받기</button>
+	<div id="printNew"></div>
+</body>
+<script>
+	$(function(){
+		$("#getNew").click(function(){
+			console.log("요청됨")
+			fetch('/newAccessToken',{
+				method : 'POST',
+				headers : {
+					'Content-Type': 'application/json',
+					'Refresh' : localStorage.getItem('Refresh')
+				}
+			}).then(response => response.json())
+			.then(data => {
+				console.log(data.accessToken);
+				$("#printNew").html(data.accessToken);
+				localStorage.setItem('token',data.accessToken)
+			})
+		})
+		
+		$("#submit").click(function(){
+				console.log("test")
+				var username = $("#username").val();
+				var password = $("#password").val();
+				
+				fetch('/login_proc', {
+					method : 'POST',
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					body : JSON.stringify({
+						username,
+						password
+					})
+				})
+				.then(response => response.json())
+				.then(data => {
+						localStorage.setItem('token',data.accessToken)
+						localStorage.setItem('Refresh',data.refreshToken)
+
+				})
+			})
+		$("#checkToken").click(function(){
+			$("#NowtokenInfo").html(localStorage.getItem("token"))
+		})
+		$("#toAdd").click(function(){
+			var token = localStorage.getItem('token');
+			fetch('/add_data', {
+			    method: 'POST',
+			    headers: {
+			        'Authorization': 'Bearer ' + token
+			    }
+			}).then(data => {
+				console.log(data);
+				
+			})
+		})
+	})
+	
+	
+	
+</script>
+</html>

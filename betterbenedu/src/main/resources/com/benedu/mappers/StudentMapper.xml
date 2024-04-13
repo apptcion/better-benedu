@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.benedu.mappers.StudentMapper">
+	
+	<resultMap id="StudentRoles" type="com.benedu.DTO.StudentRole">
+		<result column="email" property="email"/>
+		<result column="auth" property="role"/>
+	</resultMap>
+	
+	<resultMap id="StudentDTO" type="com.benedu.DTO.StudentDTO">
+		<id column="email" property="email"/>
+		<result column="password" property="password"/>
+		<collection property="roles" resultMap="StudentRoles">
+		</collection>
+	</resultMap>
+	
+	<resultMap id="RefreshStudentDTO" type="com.benedu.DTO.RefreshStudentDTO">
+				<id column="email" property="email"/>
+		<result column="password" property="password"/>
+		<result column="UUID" property="uuidStr"/>
+		<result column="validDate" property="validDate"/>
+		<collection property="auth" resultMap="StudentRoles">
+		</collection>
+	</resultMap>
+	
+	
+    <select id="getAllUser" resultMap="StudentDTO">
+        SELECT student.email ,student.password, auth from 
+			student student LEFT OUTER JOIN authStudent auth on student.email = auth.email
+    </select>
+    
+    <select id="getOneUserByName" parameterType="String" resultMap="StudentDTO">
+		SELECT student.email ,student.password, auth from 
+			student student LEFT OUTER JOIN authStudent auth on student.email = auth.email where student.username = #{username}
+	</select>
+	
+	<select id="getOneUserByEmail" parameterType="String" resultMap="StudentDTO">
+SELECT student.email ,student.password, auth from 
+			student student LEFT OUTER JOIN authStudent auth on student.email = auth.email where student.email = #{email}
+	</select>
+	
+	<select id="getUserForRefresh" parameterType="String" resultMap="RefreshStudentDTO">
+		SELECT  s.email,
+		        s.password,
+				a.AUTH,
+				r.UUID,
+				r.validDate
+		FROM student s
+		LEFT JOIN AuthStudent a ON s.email = a.email
+		LEFT JOIN Refresh r ON s.email = r.email
+		WHERE s.email = #{email}
+	</select>
+	
+	<select id="isRegisteredUser" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM student WHERE email=#{email}
+		
+	</select>
+	
+	<insert id="registUserToStudent" parameterType="com.benedu.DTO.StudentDTO">
+		INSERT INTO student (email, password) VALUES (#{email}, #{password})
+	</insert>
+	
+	<insert id="registUserToAuth" parameterType="com.benedu.DTO.StudentRole">
+		INSERT INTO authstudent (email, auth) VALUES (#{email}, #{role})
+	</insert>
+	
+	<!--<insert id="setRefreshToken" parameterType="Map">
+		insert into refresh (email, validDate, UUID) values (#{email},#{validDate},#{uuid});
+	</insert>-->
+	
+	<insert id="setRefreshToken" parameterType="Map">
+		insert into refresh(email, validDate,UUID) values(#{email},#{validDate},#{uuid})
+	</insert>
+	
+	<update id="updateRefreshToken" parameterType="Map">
+		update refresh 
+			SET email = #{email}
+			,	validDate = #{validDate}
+			,	UUID = #{uuid}
+		WHERE email = #{email}
+	</update>
+</mapper>
