@@ -22,9 +22,20 @@
 	<button id="toAdd">이동</button>
 	<button id="getNew">새 토큰 발급 받기</button>
 	<div id="printNew"></div>
+	<button id="loginWithGoogle">구글로 로그인</button>
 </body>
 <script>
 	$(function(){
+		$("#LoginWithGoogle").click(function(){
+			const url = "https://account.google.com/o/oauth2/v2/auth?client_id="
+					+ "26365029818-68bfbn3aepqfhn6led2c7ffadp62bgpq.apps.googleusercontent.com"
+					+ "$redirect_uri=" + "https://api.betterbenedu.site:80/loginSuccess"
+					+ '&response_type=code' +
+				      '&scope=email profile';
+			
+			this.showSocialLoginPopup(url)
+		})
+		
 		$("#getNew").click(function(){
 			console.log("요청됨")
 			fetch('/newAccessToken',{
