@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Login</title>
 </head>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script  src="https://code.jquery.com/jquery-latest.min.js"></script>
 <body>
 	<div class="form-group">
 	    <label th:for="username">이메일</label>
@@ -22,8 +22,16 @@
 	<button id="toAdd">이동</button>
 	<button id="getNew">새 토큰 발급 받기</button>
 	<div id="printNew"></div>
-	<button id="loginWithGoogle">구글로 로그인</button>
-</body>
+	
+	<button id="LoginWithDimigoIn">디미고인으로 로그인</button>
+	
+	<br>
+	디미고인 계정이 없나요?<br>
+	<a href="https://auth.dimigo.net/oauth?client=	
+		6620e02eba80428a0e8e8a2a&redirect=https://api.betterbenedu.site/login/dimigoin">
+		<button id="loginWithGoogle">구글로 로그인</button>
+		</a>
+	</body>
 <script>
 	$(function(){
 		$("#LoginWithGoogle").click(function(){

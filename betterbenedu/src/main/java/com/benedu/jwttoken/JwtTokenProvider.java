@@ -124,8 +124,6 @@ public class JwtTokenProvider {
 		} catch (SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
 			return false;
 		} catch (ExpiredJwtException e) {
-			
-			
 			return false;
 		}
 		

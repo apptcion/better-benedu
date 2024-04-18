@@ -1,5 +1,6 @@
 package com.benedu.javaConfig;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -74,7 +75,7 @@ public class secConfig{
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); // ⭐️ 허용할 origin
+            config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000","*.betterbenedu.*","*localhost*")); // ⭐️ 허용할 origin
             config.setAllowCredentials(true);
             return config;
         };
